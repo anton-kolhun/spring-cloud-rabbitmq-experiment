@@ -1,0 +1,16 @@
+spring:
+  rabbitmq:
+    username: user
+    password: password
+    host: localhost
+# since producer binding configurations differs from this one (dlq,etc..) - rabbitmq produces an error on first message publishing
+  cloud:
+    stream:
+      bindings:
+        sendMessage:
+          consumer:
+            requiredGroups:
+              streamData
+          contentType: application/json
+          group: streamData
+

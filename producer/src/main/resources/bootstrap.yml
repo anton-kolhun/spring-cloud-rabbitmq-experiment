@@ -1,0 +1,29 @@
+retry:
+  interval: 5000
+
+spring:
+  rabbitmq:
+    username: user
+    password: password
+    host: localhost
+  cloud:
+    stream:
+      rabbit:
+        binder.compressionLevel: 9
+        bindings.writeData.producer.compress: true
+
+        bindings:
+          sendMessage:
+            producer:
+              autoBindDlq: true
+              dlqTtl: ${retry.interval}
+              dlqDeadLetterExchange:
+
+      bindings:
+        sendMessage:
+          producer:
+            requiredGroups:
+              streamData
+          contentType: application/json
+          group: streamData
+
